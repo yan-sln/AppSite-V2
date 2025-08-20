@@ -1,0 +1,575 @@
+#:set default_font_size_label "24sp"
+#:set default_font_size_button "24sp"
+#:set default_font_size_text "16sp"
+#:set default_font_name_label "assets/fonts/junegull"
+#:set default_font_name_button "assets/fonts/junegull"
+#:set default_font_name_text "assets/fonts/LibreBaskerville-Regular"
+#:set default_font_color_label [1, 1, 1, 1]
+
+WindowManager:
+    StartWindow:
+    HeaderWindow:
+    MenuWindow:
+    ShowWindow:
+    ExportWindow:
+    
+    FCWindow:
+    
+    TDPWindow:
+    TxtWindow:
+    ImgWindow:
+    QuoteWindow:
+    LinkWindow:
+
+<StartWindow>:
+    name: "Start"
+    canvas.before:
+		Color:
+			rgba: (1,1,1,1)
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+    GridLayout:
+        cols:1
+
+        GridLayout:
+            cols: 2
+
+            Image:
+                source: 'assets/images/favicon.ico'
+                size: self.texture_size
+                
+        Button:
+            text: "Démarrer"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            size_hint: (1, .5)
+            on_release:
+                root.entry(1)
+                root.start()
+                
+<HeaderWindow>:
+    name: "Header"
+
+    GridLayout:
+        rows: 9
+        cols: 1
+        
+        Label:       
+            text: 'Titre de haut de page : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: HEAD_input_a
+            hint_text: 'La date peut suffire'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]   
+            multiline: False
+            halign: 'center'
+            
+        Label:
+            text: 'Titre du post : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: HEAD_input_b
+            hint_text: 'Attaque de poisson volant !'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        Label:
+            text: 'Sous-titre du post : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: HEAD_input_c
+            hint_text: 'Pas commun, mais possible...'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        Label:
+            text: 'Votre nom : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: HEAD_input_d
+            hint_text: 'Mi chiamo...'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        GridLayout:
+        	cols:2
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                size_hint: 1, .7
+                on_release:
+                    app.rmall()
+                    HEAD_input_a.text = ''
+                    HEAD_input_b.text = ''
+                    HEAD_input_c.text = ''
+                    HEAD_input_d.text = ''
+                    app.root.current = "Start"
+                    root.manager.transition.direction = "down"
+                    
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                size_hint: 1, .7
+                on_release:
+                    root.HEADinputProcess()        
+
+<MenuWindow>:
+    name: "Menu"
+
+    GridLayout:
+        rows:7
+        
+        Button:       
+            text: 'Ajouter un Titre de Partie'
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                app.root.current = "TDP"
+                root.manager.transition.direction = "left"
+            
+        Button:
+            text: 'Ajouter un Texte'
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                app.root.current = "Texte"
+                root.manager.transition.direction = "left"
+            
+        Button:
+            text: 'Ajouter une Image'
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                root.entry(245)
+                app.root.current = "FileChooser"
+                root.manager.transition.direction = "left"
+            
+        Button:       
+            text: 'Ajouter une Citation'
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                app.root.current = "Quote"
+                root.manager.transition.direction = "left"
+            
+        Button:       
+            text: 'Ajouter un Lien'
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                app.root.current = "Link"
+                root.manager.transition.direction = "left"
+
+        GridLayout:
+            rows: 1
+            Button:
+                text: 'Voir un Aperçu'
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    app.root.current = "Show"
+                    root.manager.transition.direction = "right"
+                
+            Button:
+                text: 'Exporter'
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    app.root.current = "Export"
+                    root.manager.transition.direction = "up"
+                                
+<ShowWindow>:
+    name: "Show"
+
+    GridLayout:
+        rows:2
+            
+        Button:
+            text: "Voir"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release: root.show()    
+            
+        Button:
+            text: "Retour"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            size_hint: 1, .5
+            on_release:
+                app.root.current = "Menu"
+                root.manager.transition.direction = "left"
+            
+<ExportWindow>:
+    name: "Export"
+
+    GridLayout:
+        cols:1
+        
+        GridLayout:
+            cols: 2
+        
+            Button:
+                text: "Retour"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    app.root.current = "Menu"
+                    root.manager.transition.direction = "down"
+            
+        Button:
+            text: "Exporter"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            on_release:
+                root.thisIstheeEnd()
+                
+<FCWindow>:
+    name: "FileChooser"
+    
+    GridLayout:
+        cols: 1
+        
+        canvas.before:
+    		Color:
+        		rgba: 0, 0, 0, 0
+    		Rectangle:
+    			pos: self.pos
+    			size: self.size        
+            
+        FileChooserIconView:
+            path: ('/')
+            id: filechooser
+            
+            #dirselect: True
+            filters: ['*.png','*.jpg']
+            
+            on_selection: self.selection and self.selection[0] or ''
+            
+        GridLayout:
+            rows:1
+            size_hint: (1, .2)
+            
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    root.cancelScreen()       
+                    
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release: 
+                    root.load(filechooser.path, filechooser.selection)                    
+                        
+<TDPWindow>:
+    name: "TDP"
+
+    GridLayout:
+        cols: 1
+    
+        TextInput:
+            id: tdp_input
+            hint_text: 'Titre de Partie !'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False
+    
+        GridLayout:
+            rows:1
+            size_hint: (1, .2)
+           
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    tdp_input.text = ''
+                    app.root.current = "Menu"
+                    root.manager.transition.direction = "right"
+                   
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    root.TDPinputProcess()
+                
+<TxtWindow>:
+    name: "Texte"
+
+    GridLayout:
+        cols:1
+                    
+        TextInput:
+            id: txt_input
+            hint_text: 'Well... Hello there!'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]   
+             
+        GridLayout:
+            rows:1
+            size_hint: (1, .2)
+            
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    txt_input.text = ''
+                    app.root.current = "Menu"
+                    root.manager.transition.direction = "right"
+                    
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    root.TXTinputProcess()
+
+<ImgWindow>:
+    name: "Img"
+
+    GridLayout:
+        cols:2
+        
+        Label:       
+            text: 'Entrez une description courte de l\'image (ne se verra pas) : '
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: IMG_input_c
+            hint_text: 'Photo de Bateau'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]   
+            multiline: False
+            
+        Label:
+            text: 'Entrez la description de l\'image : '
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+                        
+        TextInput:
+            id: IMG_input_l
+            hint_text: 'Photo d\'un bateau bleu prise à Lanzarote, le jour de la Saint Glinglin'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            
+        Button:
+            text: "Annuler"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            size_hint: 1, .6
+            on_release:
+                IMG_input_c.text = ''
+                IMG_input_l.text = ''
+                app.root.current = "Menu"
+                root.manager.transition.direction = "right"
+                
+        Button:
+            text: "Valider !"
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            size_hint: 1, .6
+            on_release:
+                root.IMGinputProcess()
+                    
+<QuoteWindow>:
+    name: "Quote"
+
+    GridLayout:
+        cols: 1
+    
+        TextInput:
+            id: QUOTE_input
+            hint_text: 'Entrez une Citation !'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]   
+    
+        GridLayout:
+            rows:1
+            size_hint: (1, .2)
+            
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    QUOTE_input.text = ''
+                    app.root.current = "Menu"
+                    root.manager.transition.direction = "right"
+                    
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                on_release:
+                    root.QUOTEinputProcess()
+
+<LinkWindow>:
+    name: "Link"
+
+    GridLayout:
+        rows: 9
+        cols: 1
+        
+        Label:       
+            text: 'Entrez la première partie de votre texte :'
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: LINK_input_a
+            hint_text: 'Blablablabla...'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]   
+            multiline: False
+            halign: 'center'
+            
+        Label:
+            text: 'Nom du lien : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: LINK_input_b
+            hint_text: 'Obligatoire !'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        Label:
+            text: 'Entre le lien : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: LINK_input_c
+            hint_text: 'https://ile-segal.com'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        Label:
+            text: 'La deuxième partie de votre texte : '
+            color: default_font_color_label
+            font_name: default_font_name_button
+            font_size: default_font_size_button
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            
+        TextInput:
+            id: LINK_input_d
+            hint_text: '...blablablaabla.'
+            font_size: default_font_size_text
+            font_name: default_font_name_text
+            background_color: [1,1,1,.75]
+            selection_color: [1,0,0,.2]  
+            multiline: False 
+            halign: 'center'
+            
+        GridLayout:
+        	cols:2
+            Button:
+                text: "Annuler"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                size_hint: 1, .7
+                on_release:
+                    LINK_input_a.text = ''
+                    LINK_input_b.text = ''
+                    LINK_input_c.text = ''
+                    LINK_input_d.text = ''
+                    app.root.current = "Menu"
+                    root.manager.transition.direction = "right"
+                    
+            Button:
+                text: "Valider !"
+                font_name: default_font_name_button
+                font_size: default_font_size_button
+                size_hint: 1, .7
+                on_release:
+                    root.LINKinputProcess()
